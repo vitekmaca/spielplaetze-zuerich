@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spielplätze Zürich</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      display: flex;
+      height: 100dvh;
+      overflow: hidden;
+      background: #f5f5f5;
+    }
+
+    /* ── Sidebar ─────────────────────────────────────── */
+    #sidebar {
+      width: 340px;
+      min-width: 280px;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      box-shadow: 2px 0 8px rgba(0,0,0,.12);
+      z-index: 1000;
+      overflow: hidden;
+    }
+
+    #sidebar-header {
+      padding: 16px;
+      background: #1a6e3c;
+      color: #fff;
+    }
+
+    #sidebar-header h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: .3px;
+    }
+
+    #sidebar-header p {
+      font-size: 12px;
+      opacity: .75;
+      margin-top: 2px;
+    }
+
+    #count-badge {
+      display: inline-block;
+      background: rgba(255,255,255,.25);
+      border-radius: 20px;
+      padding: 1px 8px;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    /* ── Filters ─────────────────────────────────────── */
+    #filters {
+      padding: 12px 16px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .filter-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .filter-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #666;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+      transition: border .15s;
+    }
+
+    input[type="text"]:focus, select:focus {
+      border-color: #1a6e3c;
+    }
+
+    #btn-locate {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      background: #1a6e3c;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background .15s;
+    }
+
+    #btn-locate:hover { background: #145530; }
+    #btn-locate svg { flex-shrink: 0; }
+
+    #equipment-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .equip-chip {
+      padding: 3px 9px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 11px;
+      cursor: pointer;
+      background: #fff;
+      transition: all .15s;
+      user-select: none;
+    }
+
+    .equip-chip.active {
+      background: #1a6e3c;
+      border-color: #1a6e3c;
+      color: #fff;
+    }
+
+    #btn-clear {
+      font-size: 11px;
+      color: #1a6e3c;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      align-self: flex-end;
+    }
+
+    /* ── Playground list ─────────────────────────────── */
+    #list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0;
+    }
+
+    .playground-item {
+      padding: 10px 16px;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+      transition: background .1s;
+    }
+
+    .playground-item:hover { background: #f7fdf9; }
+    .playground-item.highlighted { background: #e8f5ee; }
+
+    .pi-name {
+      font-weight: 600;
+      font-size: 13px;
+      color: #1a1a1a;
+    }
+
+    .pi-addr {
+      font-size: 11px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .pi-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+      margin-top: 5px;
+    }
+
+    .pi-tag {
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      background: #e8f5ee;
+      color: #1a6e3c;
+    }
+
+    .pi-tag.age {
+      background: #fff3e0;
+      color: #e65100;
+    }
+
+    .pi-distance {
+      font-size: 10px;
+      color: #aaa;
+      margin-top: 3px;
+    }
+
+    #no-results {
+      text-align: center;
+      padding: 32px 16px;
+      color: #aaa;
+      font-size: 13px;
+      display: none;
+    }
+
+    /* ── Map ─────────────────────────────────────────── */
+    #map {
+      flex: 1;
+    }
+
+    /* ── Popup ───────────────────────────────────────── */
+    .popup-title {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .popup-addr {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 6px;
+    }
+
+    .popup-row {
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .popup-row strong { color: #333; }
+
+    .popup-link {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 10px;
+      background: #1a6e3c;
+      color: #fff;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 11px;
+    }
+
+    .popup-link:hover { background: #145530; }
+
+    /* ── Loading overlay ─────────────────────────────── */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,.85);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      gap: 12px;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 4px solid #ddd;
+      border-top-color: #1a6e3c;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #loading p { font-size: 14px; color: #555; }
+
+    /* ── Mobile ──────────────────────────────────────── */
+    @media (max-width: 640px) {
+      body { flex-direction: column; }
+
+      #sidebar {
+        width: 100%;
+        height: 45dvh;
+        box-shadow: 0 2px 8px rgba(0,0,0,.12);
+      }
+
+      #map { height: 55dvh; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="spinner"></div>
+  <p>Spielplätze werden geladen…</p>
+</div>
+
+<!-- ── Sidebar ───────────────────────────────────────── -->
+<div id="sidebar">
+  <div id="sidebar-header">
+    <h1>🛝 Spielplätze Zürich</h1>
+    <p>Öffentliche Spielplätze der Stadt Zürich</p>
+    <span id="count-badge">Wird geladen…</span>
+  </div>
+
+  <div id="filters">
+    <!-- Search -->
+    <div class="filter-row">
+      <span class="filter-label">Suche</span>
+      <input type="text" id="search" placeholder="Name oder Adresse…" />
+    </div>
+
+    <!-- Age range -->
+    <div class="filter-row">
+      <span class="filter-label">Altersgruppe</span>
+      <select id="age-filter">
+        <option value="">Alle Altersgruppen</option>
+        <option value="0 - 5">0 – 5 Jahre</option>
+        <option value="0 - 9">0 – 9 Jahre</option>
+        <option value="0 - 16">0 – 16 Jahre</option>
+      </select>
+    </div>
+
+    <!-- Equipment chips -->
+    <div class="filter-row">
+      <span class="filter-label">Geräte / Ausstattung</span>
+      <div id="equipment-filter"></div>
+    </div>
+
+    <!-- Actions row -->
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+      <button id="btn-locate">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+        </svg>
+        In meiner Nähe
+      </button>
+      <button id="btn-clear">Filter zurücksetzen</button>
+    </div>
+  </div>
+
+  <div id="list">
+    <div id="no-results">Keine Spielplätze gefunden.</div>
+  </div>
+</div>
+
+<!-- ── Map ───────────────────────────────────────────── -->
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script>
+// ── Config ────────────────────────────────────────────
+const WFS_URL = 'https://www.ogd.stadt-zuerich.ch/wfs/geoportal/POI_oeffentliche_Spielplaetze'
+  + '?SERVICE=WFS&REQUEST=GetFeature&VERSION=1.1.0'
+  + '&TYPENAME=poi_spielplatz_view&OUTPUTFORMAT=GML3&SRSNAME=EPSG:4326';
+
+const CITY_MAP_URL = (poiId) =>
+  `https://www.maps.stadt-zuerich.ch/zueriplan3/Stadtplan.aspx?`
+  + `#basemap=Stadtplan&scale=2000&layer=Spielplatz`
+  + `&selectedObject=${poiId}&selectedLayer=Spielplatz`;
+
+// Common equipment for filter chips (curated from data)
+const COMMON_EQUIPMENT = [
+  'Schaukel', 'Rutsche', 'Sandkasten', 'Kletteranlage',
+  'Federwippe', 'Korbschaukel', 'Tischtennistisch', 'Trampolin',
+  'Wasseranlage', 'Balanciergerät', 'Seilbahn', 'Wippe',
+  'Fussballplatz', 'Basketballkorb', 'Boulebahn',
+];
+
+// ── State ─────────────────────────────────────────────
+let allPlaygrounds = [];
+let markers = {};         // poi_id -> Leaflet marker
+let userLat = null, userLng = null;
+let activeEquipment = new Set();
+let clusterGroup;
+
+// ── Map init ──────────────────────────────────────────
+const map = L.map('map').setView([47.3769, 8.5417], 13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  maxZoom: 19,
+}).addTo(map);
+
+clusterGroup = L.markerClusterGroup({ maxClusterRadius: 50 });
+map.addLayer(clusterGroup);
+
+// ── Parse GML ─────────────────────────────────────────
+function parseGML(xml) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(xml, 'text/xml');
+  const members = doc.querySelectorAll('featureMember');
+  const playgrounds = [];
+
+  members.forEach(member => {
+    const get = (tag) => {
+      const el = member.querySelector(tag);
+      return el && !el.getAttribute('xsi:nil') ? el.textContent.trim() : '';
+    };
+
+    const posEl = member.querySelector('pos');
+    if (!posEl) return;
+    const [lng, lat] = posEl.textContent.trim().split(' ').map(Number);
+
+    playgrounds.push({
+      id: get('poi_id'),
+      name: get('name'),
+      address: get('adresse'),
+      age: get('eignung'),
+      equipment: get('geraete'),
+      elements: get('elemente'),
+      special: get('besonderes'),
+      hasPhoto: get('foto') === 'J',
+      lat, lng,
+    });
+  });
+
+  return playgrounds;
+}
+
+// ── Marker icon ───────────────────────────────────────
+const playgroundIcon = L.divIcon({
+  className: '',
+  html: `<div style="width:28px;height:28px;background:#1a6e3c;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:14px;">🛝</div>`,
+  iconSize: [28, 28],
+  iconAnchor: [14, 14],
+});
+
+const highlightIcon = L.divIcon({
+  className: '',
+  html: `<div style="width:34px;height:34px;background:#e65100;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:16px;">🛝</div>`,
+  iconSize: [34, 34],
+  iconAnchor: [17, 17],
+});
+
+// ── Build popup ───────────────────────────────────────
+function buildPopup(p) {
+  const equipList = p.equipment ? p.equipment.split(',').map(e =>
+    `<span style="display:inline-block;background:#e8f5ee;color:#1a6e3c;border-radius:10px;padding:1px 7px;font-size:11px;margin:2px 1px;">${e.trim()}</span>`
+  ).join('') : '–';
+
+  return `
+    <div style="min-width:220px;max-width:280px;">
+      <div class="popup-title">${p.name || 'Spielplatz'}</div>
+      <div class="popup-addr">📍 ${p.address || '–'}</div>
+      ${p.age ? `<div class="popup-row"><strong>Alter:</strong> ${p.age}</div>` : ''}
+      ${p.equipment ? `<div class="popup-row"><strong>Geräte:</strong><br>${equipList}</div>` : ''}
+      ${p.elements ? `<div class="popup-row"><strong>Elemente:</strong> ${p.elements}</div>` : ''}
+      ${p.special ? `<div class="popup-row" style="color:#777;font-style:italic">${p.special}</div>` : ''}
+      <a class="popup-link" href="${CITY_MAP_URL(p.id)}" target="_blank" rel="noopener">
+        Auf Stadt Zürich Karte →
+      </a>
+    </div>
+  `;
+}
+
+// ── Distance helper ───────────────────────────────────
+function haversine(lat1, lng1, lat2, lng2) {
+  const R = 6371000;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLng/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function fmtDistance(m) {
+  return m < 1000 ? `${Math.round(m)} m` : `${(m/1000).toFixed(1)} km`;
+}
+
+// ── Filters ───────────────────────────────────────────
+function getFiltered() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const age = document.getElementById('age-filter').value;
+
+  return allPlaygrounds.filter(p => {
+    if (q && !`${p.name} ${p.address}`.toLowerCase().includes(q)) return false;
+    if (age && !p.age.includes(age)) return false;
+    if (activeEquipment.size > 0) {
+      const eq = p.equipment.toLowerCase();
+      for (const e of activeEquipment) {
+        if (!eq.includes(e.toLowerCase())) return false;
+      }
+    }
+    return true;
+  });
+}
+
+// ── Render list ───────────────────────────────────────
+function renderList(filtered) {
+  const list = document.getElementById('list');
+  const noResults = document.getElementById('no-results');
+
+  // Remove old items (keep no-results div)
+  [...list.querySelectorAll('.playground-item')].forEach(el => el.remove());
+
+  if (filtered.length === 0) {
+    noResults.style.display = 'block';
+    return;
+  }
+  noResults.style.display = 'none';
+
+  // Sort by distance if available, otherwise by name
+  const sorted = [...filtered].sort((a, b) => {
+    if (userLat !== null) {
+      return haversine(userLat, userLng, a.lat, a.lng) - haversine(userLat, userLng, b.lat, b.lng);
+    }
+    return (a.name || '').localeCompare(b.name || '', 'de');
+  });
+
+  sorted.forEach(p => {
+    const item = document.createElement('div');
+    item.className = 'playground-item';
+    item.dataset.id = p.id;
+
+    const tags = [];
+    if (p.age) tags.push(`<span class="pi-tag age">${p.age}</span>`);
+    if (p.equipment) {
+      p.equipment.split(',').slice(0, 3).forEach(e =>
+        tags.push(`<span class="pi-tag">${e.trim()}</span>`)
+      );
+      if (p.equipment.split(',').length > 3)
+        tags.push(`<span class="pi-tag">+${p.equipment.split(',').length - 3}</span>`);
+    }
+
+    const dist = userLat !== null
+      ? `<div class="pi-distance">📍 ${fmtDistance(haversine(userLat, userLng, p.lat, p.lng))}</div>`
+      : '';
+
+    item.innerHTML = `
+      <div class="pi-name">${p.name || 'Spielplatz'}</div>
+      <div class="pi-addr">${p.address || ''}</div>
+      <div class="pi-tags">${tags.join('')}</div>
+      ${dist}
+    `;
+
+    item.addEventListener('click', () => {
+      highlightPlayground(p.id);
+    });
+
+    list.appendChild(item);
+  });
+}
+
+// ── Highlight one playground ──────────────────────────
+let lastHighlighted = null;
+
+function highlightPlayground(id) {
+  // Reset previous
+  if (lastHighlighted && markers[lastHighlighted]) {
+    markers[lastHighlighted].setIcon(playgroundIcon);
+  }
+  // Highlight list item
+  document.querySelectorAll('.playground-item').forEach(el => {
+    el.classList.toggle('highlighted', el.dataset.id === id);
+  });
+  // Highlight marker
+  const marker = markers[id];
+  if (marker) {
+    marker.setIcon(highlightIcon);
+    clusterGroup.zoomToShowLayer(marker, () => {
+      marker.openPopup();
+    });
+  }
+  lastHighlighted = id;
+}
+
+// ── Update map markers ────────────────────────────────
+function updateMap(filtered) {
+  clusterGroup.clearLayers();
+  markers = {};
+
+  filtered.forEach(p => {
+    const m = L.marker([p.lat, p.lng], { icon: playgroundIcon })
+      .bindPopup(buildPopup(p), { maxWidth: 300 });
+
+    m.on('click', () => {
+      // Highlight list item
+      document.querySelectorAll('.playground-item').forEach(el => {
+        el.classList.toggle('highlighted', el.dataset.id === p.id);
+      });
+      const el = document.querySelector(`.playground-item[data-id="${p.id}"]`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      lastHighlighted = p.id;
+    });
+
+    markers[p.id] = m;
+    clusterGroup.addLayer(m);
+  });
+}
+
+// ── Apply filters ─────────────────────────────────────
+function applyFilters() {
+  const filtered = getFiltered();
+  document.getElementById('count-badge').textContent =
+    `${filtered.length} von ${allPlaygrounds.length} Spielplätzen`;
+  renderList(filtered);
+  updateMap(filtered);
+}
+
+// ── Equipment chips ───────────────────────────────────
+function buildEquipmentChips() {
+  const container = document.getElementById('equipment-filter');
+  COMMON_EQUIPMENT.forEach(eq => {
+    const chip = document.createElement('span');
+    chip.className = 'equip-chip';
+    chip.textContent = eq;
+    chip.addEventListener('click', () => {
+      if (activeEquipment.has(eq)) {
+        activeEquipment.delete(eq);
+        chip.classList.remove('active');
+      } else {
+        activeEquipment.add(eq);
+        chip.classList.add('active');
+      }
+      applyFilters();
+    });
+    container.appendChild(chip);
+  });
+}
+
+// ── Locate user ───────────────────────────────────────
+document.getElementById('btn-locate').addEventListener('click', () => {
+  if (!navigator.geolocation) {
+    alert('Geolocation wird von Ihrem Browser nicht unterstützt.');
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(pos => {
+    userLat = pos.coords.latitude;
+    userLng = pos.coords.longitude;
+
+    // Show user on map
+    L.circle([userLat, userLng], { radius: 50, color: '#1a6e3c', fillOpacity: .3 })
+      .addTo(map)
+      .bindPopup('Ihr Standort');
+    map.setView([userLat, userLng], 15);
+
+    applyFilters();
+  }, () => {
+    alert('Standort konnte nicht ermittelt werden. Bitte erlauben Sie den Zugriff.');
+  });
+});
+
+// ── Clear filters ─────────────────────────────────────
+document.getElementById('btn-clear').addEventListener('click', () => {
+  document.getElementById('search').value = '';
+  document.getElementById('age-filter').value = '';
+  activeEquipment.clear();
+  document.querySelectorAll('.equip-chip').forEach(c => c.classList.remove('active'));
+  userLat = null; userLng = null;
+  applyFilters();
+  map.setView([47.3769, 8.5417], 13);
+});
+
+// ── Event listeners ───────────────────────────────────
+document.getElementById('search').addEventListener('input', applyFilters);
+document.getElementById('age-filter').addEventListener('change', applyFilters);
+
+// ── Load data ─────────────────────────────────────────
+async function loadData() {
+  try {
+    const res = await fetch(WFS_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const xml = await res.text();
+    allPlaygrounds = parseGML(xml);
+    buildEquipmentChips();
+    applyFilters();
+    document.getElementById('loading').style.display = 'none';
+  } catch (err) {
+    document.getElementById('loading').innerHTML =
+      `<p style="color:#c00;">Fehler beim Laden der Daten.<br>${err.message}</p>`;
+  }
+}
+
+loadData();
+</script>
+</body>
+</html>
