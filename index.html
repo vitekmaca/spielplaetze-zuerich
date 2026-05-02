@@ -20,7 +20,6 @@
       background: #f5f5f5;
     }
 
-    /* ── Sidebar ─────────────────────────────────────── */
     #sidebar {
       width: 340px;
       min-width: 280px;
@@ -36,19 +35,11 @@
       padding: 16px;
       background: #1a6e3c;
       color: #fff;
+      flex-shrink: 0;
     }
 
-    #sidebar-header h1 {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: .3px;
-    }
-
-    #sidebar-header p {
-      font-size: 12px;
-      opacity: .75;
-      margin-top: 2px;
-    }
+    #sidebar-header h1 { font-size: 18px; font-weight: 700; }
+    #sidebar-header p { font-size: 12px; opacity: .75; margin-top: 2px; }
 
     #count-badge {
       display: inline-block;
@@ -59,19 +50,13 @@
       margin-top: 6px;
     }
 
-    /* ── Filters ─────────────────────────────────────── */
     #filters {
       padding: 12px 16px;
       border-bottom: 1px solid #eee;
       display: flex;
       flex-direction: column;
       gap: 10px;
-    }
-
-    .filter-row {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+      flex-shrink: 0;
     }
 
     .filter-label {
@@ -80,6 +65,8 @@
       text-transform: uppercase;
       letter-spacing: .5px;
       color: #666;
+      margin-bottom: 4px;
+      display: block;
     }
 
     input[type="text"], select {
@@ -91,10 +78,7 @@
       outline: none;
       transition: border .15s;
     }
-
-    input[type="text"]:focus, select:focus {
-      border-color: #1a6e3c;
-    }
+    input[type="text"]:focus, select:focus { border-color: #1a6e3c; }
 
     #btn-locate {
       display: flex;
@@ -107,16 +91,15 @@
       border-radius: 6px;
       font-size: 13px;
       cursor: pointer;
-      transition: background .15s;
     }
-
     #btn-locate:hover { background: #145530; }
-    #btn-locate svg { flex-shrink: 0; }
 
     #equipment-filter {
       display: flex;
       flex-wrap: wrap;
       gap: 5px;
+      max-height: 80px;
+      overflow-y: auto;
     }
 
     .equip-chip {
@@ -128,13 +111,9 @@
       background: #fff;
       transition: all .15s;
       user-select: none;
+      white-space: nowrap;
     }
-
-    .equip-chip.active {
-      background: #1a6e3c;
-      border-color: #1a6e3c;
-      color: #fff;
-    }
+    .equip-chip.active { background: #1a6e3c; border-color: #1a6e3c; color: #fff; }
 
     #btn-clear {
       font-size: 11px;
@@ -146,41 +125,20 @@
       align-self: flex-end;
     }
 
-    /* ── Playground list ─────────────────────────────── */
-    #list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 8px 0;
-    }
+    #list { flex: 1; overflow-y: auto; padding: 4px 0; }
 
     .playground-item {
-      padding: 10px 16px;
+      padding: 9px 16px;
       border-bottom: 1px solid #f0f0f0;
       cursor: pointer;
       transition: background .1s;
     }
-
     .playground-item:hover { background: #f7fdf9; }
     .playground-item.highlighted { background: #e8f5ee; }
 
-    .pi-name {
-      font-weight: 600;
-      font-size: 13px;
-      color: #1a1a1a;
-    }
-
-    .pi-addr {
-      font-size: 11px;
-      color: #888;
-      margin-top: 2px;
-    }
-
-    .pi-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 3px;
-      margin-top: 5px;
-    }
+    .pi-name { font-weight: 600; font-size: 13px; color: #1a1a1a; }
+    .pi-addr { font-size: 11px; color: #888; margin-top: 1px; }
+    .pi-tags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
 
     .pi-tag {
       font-size: 10px;
@@ -189,17 +147,10 @@
       background: #e8f5ee;
       color: #1a6e3c;
     }
+    .pi-tag.age { background: #fff3e0; color: #e65100; }
+    .pi-tag.osm { background: #e8eaf6; color: #3949ab; }
 
-    .pi-tag.age {
-      background: #fff3e0;
-      color: #e65100;
-    }
-
-    .pi-distance {
-      font-size: 10px;
-      color: #aaa;
-      margin-top: 3px;
-    }
+    .pi-distance { font-size: 10px; color: #aaa; margin-top: 2px; }
 
     #no-results {
       text-align: center;
@@ -209,49 +160,30 @@
       display: none;
     }
 
-    /* ── Map ─────────────────────────────────────────── */
-    #map {
-      flex: 1;
-    }
+    #map { flex: 1; }
 
-    /* ── Popup ───────────────────────────────────────── */
-    .popup-title {
-      font-weight: 700;
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
-
-    .popup-addr {
-      font-size: 12px;
-      color: #666;
-      margin-bottom: 6px;
-    }
-
-    .popup-row {
-      font-size: 12px;
-      margin-bottom: 4px;
-    }
-
+    .popup-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .popup-addr { font-size: 12px; color: #666; margin-bottom: 6px; }
+    .popup-row { font-size: 12px; margin-bottom: 4px; }
     .popup-row strong { color: #333; }
 
+    .popup-links { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
     .popup-link {
       display: inline-block;
-      margin-top: 8px;
       padding: 4px 10px;
       background: #1a6e3c;
-      color: #fff;
+      color: #fff !important;
       border-radius: 4px;
       text-decoration: none;
       font-size: 11px;
     }
+    .popup-link.osm { background: #3949ab; }
+    .popup-link:hover { opacity: .85; }
 
-    .popup-link:hover { background: #145530; }
-
-    /* ── Loading overlay ─────────────────────────────── */
     #loading {
       position: fixed;
       inset: 0;
-      background: rgba(255,255,255,.85);
+      background: rgba(255,255,255,.9);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -259,30 +191,20 @@
       z-index: 9999;
       gap: 12px;
     }
-
     .spinner {
-      width: 36px;
-      height: 36px;
+      width: 36px; height: 36px;
       border: 4px solid #ddd;
       border-top-color: #1a6e3c;
       border-radius: 50%;
       animation: spin .8s linear infinite;
     }
-
     @keyframes spin { to { transform: rotate(360deg); } }
-
     #loading p { font-size: 14px; color: #555; }
+    #loading small { font-size: 11px; color: #aaa; }
 
-    /* ── Mobile ──────────────────────────────────────── */
     @media (max-width: 640px) {
       body { flex-direction: column; }
-
-      #sidebar {
-        width: 100%;
-        height: 45dvh;
-        box-shadow: 0 2px 8px rgba(0,0,0,.12);
-      }
-
+      #sidebar { width: 100%; height: 45dvh; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
       #map { height: 55dvh; }
     }
   </style>
@@ -292,41 +214,37 @@
 <div id="loading">
   <div class="spinner"></div>
   <p>Spielplätze werden geladen…</p>
+  <small>OpenStreetMap + Stadt Zürich Daten</small>
 </div>
 
-<!-- ── Sidebar ───────────────────────────────────────── -->
 <div id="sidebar">
   <div id="sidebar-header">
     <h1>🛝 Spielplätze Zürich</h1>
-    <p>Öffentliche Spielplätze der Stadt Zürich</p>
+    <p>OpenStreetMap · Stadt Zürich</p>
     <span id="count-badge">Wird geladen…</span>
   </div>
 
   <div id="filters">
-    <!-- Search -->
-    <div class="filter-row">
+    <div>
       <span class="filter-label">Suche</span>
-      <input type="text" id="search" placeholder="Name oder Adresse…" />
+      <input type="text" id="search" placeholder="Name, Adresse, Ausstattung…" />
     </div>
 
-    <!-- Age range -->
-    <div class="filter-row">
-      <span class="filter-label">Altersgruppe</span>
+    <div>
+      <span class="filter-label">Altersgruppe (Stadt ZH Daten)</span>
       <select id="age-filter">
-        <option value="">Alle Altersgruppen</option>
+        <option value="">Alle</option>
         <option value="0 - 5">0 – 5 Jahre</option>
         <option value="0 - 9">0 – 9 Jahre</option>
         <option value="0 - 16">0 – 16 Jahre</option>
       </select>
     </div>
 
-    <!-- Equipment chips -->
-    <div class="filter-row">
-      <span class="filter-label">Geräte / Ausstattung</span>
+    <div>
+      <span class="filter-label">Geräte (Stadt ZH Daten)</span>
       <div id="equipment-filter"></div>
     </div>
 
-    <!-- Actions row -->
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
       <button id="btn-locate">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -334,7 +252,7 @@
         </svg>
         In meiner Nähe
       </button>
-      <button id="btn-clear">Filter zurücksetzen</button>
+      <button id="btn-clear">Zurücksetzen</button>
     </div>
   </div>
 
@@ -343,24 +261,32 @@
   </div>
 </div>
 
-<!-- ── Map ───────────────────────────────────────────── -->
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script>
-// ── Config ────────────────────────────────────────────
+// ── Data sources ──────────────────────────────────────
+const OVERPASS_URL = 'https://overpass-api.de/api/interpreter';
+const OVERPASS_QUERY = `[out:json][timeout:60];
+area["name"="Zürich"]["admin_level"="8"]->.a;
+(
+  node["leisure"="playground"](area.a);
+  way["leisure"="playground"](area.a);
+);
+out center tags;`;
+
 const WFS_URL = 'https://www.ogd.stadt-zuerich.ch/wfs/geoportal/POI_oeffentliche_Spielplaetze'
   + '?SERVICE=WFS&REQUEST=GetFeature&VERSION=1.1.0'
   + '&TYPENAME=poi_spielplatz_view&OUTPUTFORMAT=GML3&SRSNAME=EPSG:4326';
 
 const CITY_MAP_URL = (poiId) =>
-  `https://www.maps.stadt-zuerich.ch/zueriplan3/Stadtplan.aspx?`
-  + `#basemap=Stadtplan&scale=2000&layer=Spielplatz`
-  + `&selectedObject=${poiId}&selectedLayer=Spielplatz`;
+  `https://www.maps.stadt-zuerich.ch/zueriplan3/Stadtplan.aspx?#basemap=Stadtplan&scale=2000&layer=Spielplatz&selectedObject=${poiId}&selectedLayer=Spielplatz`;
 
-// Common equipment for filter chips (curated from data)
-const COMMON_EQUIPMENT = [
+const OSM_URL = (osmId, osmType) =>
+  `https://www.openstreetmap.org/${osmType}/${osmId}`;
+
+const EQUIPMENT_CHIPS = [
   'Schaukel', 'Rutsche', 'Sandkasten', 'Kletteranlage',
   'Federwippe', 'Korbschaukel', 'Tischtennistisch', 'Trampolin',
   'Wasseranlage', 'Balanciergerät', 'Seilbahn', 'Wippe',
@@ -369,113 +295,144 @@ const COMMON_EQUIPMENT = [
 
 // ── State ─────────────────────────────────────────────
 let allPlaygrounds = [];
-let markers = {};         // poi_id -> Leaflet marker
+let markers = {};
 let userLat = null, userLng = null;
 let activeEquipment = new Set();
 let clusterGroup;
 
-// ── Map init ──────────────────────────────────────────
+// ── Map ───────────────────────────────────────────────
 const map = L.map('map').setView([47.3769, 8.5417], 13);
-
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Stadt Zürich OGD',
   maxZoom: 19,
 }).addTo(map);
 
 clusterGroup = L.markerClusterGroup({ maxClusterRadius: 50 });
 map.addLayer(clusterGroup);
 
-// ── Parse GML ─────────────────────────────────────────
-function parseGML(xml) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(xml, 'text/xml');
-  const members = doc.querySelectorAll('featureMember');
-  const playgrounds = [];
+// ── Icons ─────────────────────────────────────────────
+function makeIcon(color, size) {
+  return L.divIcon({
+    className: '',
+    html: `<div style="width:${size}px;height:${size}px;background:${color};border:2px solid #fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*.5)}px;">🛝</div>`,
+    iconSize: [size, size],
+    iconAnchor: [size/2, size/2],
+  });
+}
 
-  members.forEach(member => {
-    const get = (tag) => {
-      const el = member.querySelector(tag);
-      return el && !el.getAttribute('xsi:nil') ? el.textContent.trim() : '';
-    };
+const iconNormal    = makeIcon('#1a6e3c', 26);
+const iconCity      = makeIcon('#2e7d32', 28); // city-data playgrounds (green)
+const iconHighlight = makeIcon('#e65100', 32);
 
-    const posEl = member.querySelector('pos');
+// ── Parse WFS GML ─────────────────────────────────────
+function parseWFS(xml) {
+  const doc = new DOMParser().parseFromString(xml, 'text/xml');
+  const byRef = {};
+  doc.querySelectorAll('featureMember').forEach(m => {
+    const get = tag => { const el = m.querySelector(tag); return el && !el.getAttribute('xsi:nil') ? el.textContent.trim() : ''; };
+    const posEl = m.querySelector('pos');
     if (!posEl) return;
     const [lng, lat] = posEl.textContent.trim().split(' ').map(Number);
-
-    playgrounds.push({
-      id: get('poi_id'),
+    const ref = get('nummer'); // e.g. "76"
+    const poiId = get('poi_id'); // e.g. "sp076"
+    byRef[ref] = {
+      poiId, lat, lng,
       name: get('name'),
       address: get('adresse'),
       age: get('eignung'),
       equipment: get('geraete'),
       elements: get('elemente'),
       special: get('besonderes'),
-      hasPhoto: get('foto') === 'J',
-      lat, lng,
-    });
+    };
   });
-
-  return playgrounds;
+  return byRef;
 }
 
-// ── Marker icon ───────────────────────────────────────
-const playgroundIcon = L.divIcon({
-  className: '',
-  html: `<div style="width:28px;height:28px;background:#1a6e3c;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:14px;">🛝</div>`,
-  iconSize: [28, 28],
-  iconAnchor: [14, 14],
-});
+// ── Build merged dataset ───────────────────────────────
+function mergeData(osmElements, wfsByRef) {
+  return osmElements.map(el => {
+    const tags = el.tags || {};
+    const lat = el.type === 'node' ? el.lat : el.center?.lat;
+    const lng = el.type === 'node' ? el.lon : el.center?.lon;
+    if (!lat || !lng) return null;
 
-const highlightIcon = L.divIcon({
-  className: '',
-  html: `<div style="width:34px;height:34px;background:#e65100;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:16px;">🛝</div>`,
-  iconSize: [34, 34],
-  iconAnchor: [17, 17],
-});
+    // Try to match with WFS by ref tag
+    const osmRef = tags.ref ? tags.ref.replace(/\D/g, '') : null;
+    const cityData = osmRef ? wfsByRef[osmRef] : null;
 
-// ── Build popup ───────────────────────────────────────
+    return {
+      osmId: el.id,
+      osmType: el.type,
+      lat, lng,
+      name: cityData?.name || tags.name || tags.alt_name || '',
+      address: cityData?.address || tags['addr:street'] || '',
+      operator: tags.operator || '',
+      surface: tags.surface || '',
+      wheelchair: tags.wheelchair || '',
+      openingHours: tags.opening_hours || '',
+      website: tags.website || '',
+      // City data (if matched)
+      poiId: cityData?.poiId || null,
+      age: cityData?.age || '',
+      equipment: cityData?.equipment || '',
+      elements: cityData?.elements || '',
+      special: cityData?.special || '',
+      hasCityData: !!cityData,
+    };
+  }).filter(Boolean);
+}
+
+// ── Popup ─────────────────────────────────────────────
 function buildPopup(p) {
-  const equipList = p.equipment ? p.equipment.split(',').map(e =>
-    `<span style="display:inline-block;background:#e8f5ee;color:#1a6e3c;border-radius:10px;padding:1px 7px;font-size:11px;margin:2px 1px;">${e.trim()}</span>`
-  ).join('') : '–';
+  const equipHtml = p.equipment
+    ? p.equipment.split(',').map(e =>
+        `<span style="display:inline-block;background:#e8f5ee;color:#1a6e3c;border-radius:10px;padding:1px 7px;font-size:11px;margin:2px 1px;">${e.trim()}</span>`
+      ).join('')
+    : '';
+
+  const rows = [];
+  if (p.age)          rows.push(`<div class="popup-row"><strong>Alter:</strong> ${p.age}</div>`);
+  if (p.equipment)    rows.push(`<div class="popup-row"><strong>Geräte:</strong><br>${equipHtml}</div>`);
+  if (p.elements)     rows.push(`<div class="popup-row"><strong>Elemente:</strong> ${p.elements}</div>`);
+  if (p.surface)      rows.push(`<div class="popup-row"><strong>Belag:</strong> ${p.surface}</div>`);
+  if (p.wheelchair === 'yes') rows.push(`<div class="popup-row">♿ Rollstuhlgerecht</div>`);
+  if (p.operator && !p.hasCityData) rows.push(`<div class="popup-row"><strong>Betreiber:</strong> ${p.operator}</div>`);
+  if (p.special)      rows.push(`<div class="popup-row" style="color:#777;font-style:italic">${p.special}</div>`);
+
+  const links = [];
+  if (p.poiId) links.push(`<a class="popup-link" href="${CITY_MAP_URL(p.poiId)}" target="_blank" rel="noopener">Stadt ZH Karte →</a>`);
+  links.push(`<a class="popup-link osm" href="${OSM_URL(p.osmId, p.osmType)}" target="_blank" rel="noopener">OpenStreetMap →</a>`);
 
   return `
-    <div style="min-width:220px;max-width:280px;">
+    <div style="min-width:220px;max-width:290px;">
       <div class="popup-title">${p.name || 'Spielplatz'}</div>
-      <div class="popup-addr">📍 ${p.address || '–'}</div>
-      ${p.age ? `<div class="popup-row"><strong>Alter:</strong> ${p.age}</div>` : ''}
-      ${p.equipment ? `<div class="popup-row"><strong>Geräte:</strong><br>${equipList}</div>` : ''}
-      ${p.elements ? `<div class="popup-row"><strong>Elemente:</strong> ${p.elements}</div>` : ''}
-      ${p.special ? `<div class="popup-row" style="color:#777;font-style:italic">${p.special}</div>` : ''}
-      <a class="popup-link" href="${CITY_MAP_URL(p.id)}" target="_blank" rel="noopener">
-        Auf Stadt Zürich Karte →
-      </a>
-    </div>
-  `;
+      ${p.address ? `<div class="popup-addr">📍 ${p.address}</div>` : ''}
+      ${rows.join('')}
+      <div class="popup-links">${links.join('')}</div>
+    </div>`;
 }
 
-// ── Distance helper ───────────────────────────────────
+// ── Distance ──────────────────────────────────────────
 function haversine(lat1, lng1, lat2, lng2) {
-  const R = 6371000;
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLng = (lng2 - lng1) * Math.PI / 180;
-  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLng/2)**2;
+  const R = 6371000, r = Math.PI/180;
+  const dLat = (lat2-lat1)*r, dLng = (lng2-lng1)*r;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*r)*Math.cos(lat2*r)*Math.sin(dLng/2)**2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
-
-function fmtDistance(m) {
-  return m < 1000 ? `${Math.round(m)} m` : `${(m/1000).toFixed(1)} km`;
-}
+function fmtDist(m) { return m < 1000 ? `${Math.round(m)} m` : `${(m/1000).toFixed(1)} km`; }
 
 // ── Filters ───────────────────────────────────────────
 function getFiltered() {
   const q = document.getElementById('search').value.toLowerCase();
   const age = document.getElementById('age-filter').value;
-
   return allPlaygrounds.filter(p => {
-    if (q && !`${p.name} ${p.address}`.toLowerCase().includes(q)) return false;
+    if (q) {
+      const haystack = `${p.name} ${p.address} ${p.equipment} ${p.elements} ${p.operator} ${p.special}`.toLowerCase();
+      if (!haystack.includes(q)) return false;
+    }
     if (age && !p.age.includes(age)) return false;
     if (activeEquipment.size > 0) {
+      if (!p.equipment) return false;
       const eq = p.equipment.toLowerCase();
       for (const e of activeEquipment) {
         if (!eq.includes(e.toLowerCase())) return false;
@@ -488,107 +445,78 @@ function getFiltered() {
 // ── Render list ───────────────────────────────────────
 function renderList(filtered) {
   const list = document.getElementById('list');
-  const noResults = document.getElementById('no-results');
+  document.querySelectorAll('.playground-item').forEach(el => el.remove());
+  document.getElementById('no-results').style.display = filtered.length ? 'none' : 'block';
 
-  // Remove old items (keep no-results div)
-  [...list.querySelectorAll('.playground-item')].forEach(el => el.remove());
-
-  if (filtered.length === 0) {
-    noResults.style.display = 'block';
-    return;
-  }
-  noResults.style.display = 'none';
-
-  // Sort by distance if available, otherwise by name
   const sorted = [...filtered].sort((a, b) => {
-    if (userLat !== null) {
+    if (userLat !== null)
       return haversine(userLat, userLng, a.lat, a.lng) - haversine(userLat, userLng, b.lat, b.lng);
-    }
-    return (a.name || '').localeCompare(b.name || '', 'de');
+    // City-data first, then alphabetical
+    if (a.hasCityData !== b.hasCityData) return a.hasCityData ? -1 : 1;
+    return (a.name || 'zzz').localeCompare(b.name || 'zzz', 'de');
   });
 
   sorted.forEach(p => {
     const item = document.createElement('div');
     item.className = 'playground-item';
-    item.dataset.id = p.id;
+    item.dataset.id = String(p.osmId);
 
     const tags = [];
     if (p.age) tags.push(`<span class="pi-tag age">${p.age}</span>`);
     if (p.equipment) {
-      p.equipment.split(',').slice(0, 3).forEach(e =>
-        tags.push(`<span class="pi-tag">${e.trim()}</span>`)
-      );
-      if (p.equipment.split(',').length > 3)
-        tags.push(`<span class="pi-tag">+${p.equipment.split(',').length - 3}</span>`);
+      p.equipment.split(',').slice(0,3).forEach(e => tags.push(`<span class="pi-tag">${e.trim()}</span>`));
+      if (p.equipment.split(',').length > 3) tags.push(`<span class="pi-tag">+${p.equipment.split(',').length-3}</span>`);
+    } else if (p.surface) {
+      tags.push(`<span class="pi-tag osm">${p.surface}</span>`);
     }
+    if (p.wheelchair === 'yes') tags.push(`<span class="pi-tag">♿</span>`);
 
     const dist = userLat !== null
-      ? `<div class="pi-distance">📍 ${fmtDistance(haversine(userLat, userLng, p.lat, p.lng))}</div>`
-      : '';
+      ? `<div class="pi-distance">📍 ${fmtDist(haversine(userLat, userLng, p.lat, p.lng))}</div>` : '';
 
     item.innerHTML = `
-      <div class="pi-name">${p.name || 'Spielplatz'}</div>
-      <div class="pi-addr">${p.address || ''}</div>
+      <div class="pi-name">${p.name || '<span style="color:#aaa;font-style:italic">Spielplatz (kein Name)</span>'}</div>
+      ${p.address ? `<div class="pi-addr">${p.address}</div>` : (p.operator ? `<div class="pi-addr">${p.operator}</div>` : '')}
       <div class="pi-tags">${tags.join('')}</div>
-      ${dist}
-    `;
+      ${dist}`;
 
-    item.addEventListener('click', () => {
-      highlightPlayground(p.id);
-    });
-
+    item.addEventListener('click', () => highlightPlayground(String(p.osmId)));
     list.appendChild(item);
   });
 }
 
-// ── Highlight one playground ──────────────────────────
-let lastHighlighted = null;
-
-function highlightPlayground(id) {
-  // Reset previous
-  if (lastHighlighted && markers[lastHighlighted]) {
-    markers[lastHighlighted].setIcon(playgroundIcon);
-  }
-  // Highlight list item
-  document.querySelectorAll('.playground-item').forEach(el => {
-    el.classList.toggle('highlighted', el.dataset.id === id);
-  });
-  // Highlight marker
-  const marker = markers[id];
-  if (marker) {
-    marker.setIcon(highlightIcon);
-    clusterGroup.zoomToShowLayer(marker, () => {
-      marker.openPopup();
-    });
-  }
-  lastHighlighted = id;
-}
-
-// ── Update map markers ────────────────────────────────
+// ── Update map ────────────────────────────────────────
 function updateMap(filtered) {
   clusterGroup.clearLayers();
   markers = {};
-
   filtered.forEach(p => {
-    const m = L.marker([p.lat, p.lng], { icon: playgroundIcon })
-      .bindPopup(buildPopup(p), { maxWidth: 300 });
-
+    const icon = p.hasCityData ? iconCity : iconNormal;
+    const m = L.marker([p.lat, p.lng], { icon })
+      .bindPopup(buildPopup(p), { maxWidth: 320 });
     m.on('click', () => {
-      // Highlight list item
-      document.querySelectorAll('.playground-item').forEach(el => {
-        el.classList.toggle('highlighted', el.dataset.id === p.id);
-      });
-      const el = document.querySelector(`.playground-item[data-id="${p.id}"]`);
+      document.querySelectorAll('.playground-item').forEach(el =>
+        el.classList.toggle('highlighted', el.dataset.id === String(p.osmId)));
+      const el = document.querySelector(`.playground-item[data-id="${p.osmId}"]`);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      lastHighlighted = p.id;
+      lastHighlighted = String(p.osmId);
     });
-
-    markers[p.id] = m;
+    markers[String(p.osmId)] = m;
     clusterGroup.addLayer(m);
   });
 }
 
-// ── Apply filters ─────────────────────────────────────
+let lastHighlighted = null;
+function highlightPlayground(id) {
+  if (lastHighlighted && markers[lastHighlighted]) markers[lastHighlighted].setIcon(
+    allPlaygrounds.find(p => String(p.osmId) === lastHighlighted)?.hasCityData ? iconCity : iconNormal
+  );
+  document.querySelectorAll('.playground-item').forEach(el =>
+    el.classList.toggle('highlighted', el.dataset.id === id));
+  const m = markers[id];
+  if (m) { m.setIcon(iconHighlight); clusterGroup.zoomToShowLayer(m, () => m.openPopup()); }
+  lastHighlighted = id;
+}
+
 function applyFilters() {
   const filtered = getFiltered();
   document.getElementById('count-badge').textContent =
@@ -598,49 +526,34 @@ function applyFilters() {
 }
 
 // ── Equipment chips ───────────────────────────────────
-function buildEquipmentChips() {
-  const container = document.getElementById('equipment-filter');
-  COMMON_EQUIPMENT.forEach(eq => {
+function buildChips() {
+  const c = document.getElementById('equipment-filter');
+  EQUIPMENT_CHIPS.forEach(eq => {
     const chip = document.createElement('span');
     chip.className = 'equip-chip';
     chip.textContent = eq;
     chip.addEventListener('click', () => {
-      if (activeEquipment.has(eq)) {
-        activeEquipment.delete(eq);
-        chip.classList.remove('active');
-      } else {
-        activeEquipment.add(eq);
-        chip.classList.add('active');
-      }
+      activeEquipment.has(eq) ? activeEquipment.delete(eq) : activeEquipment.add(eq);
+      chip.classList.toggle('active');
       applyFilters();
     });
-    container.appendChild(chip);
+    c.appendChild(chip);
   });
 }
 
-// ── Locate user ───────────────────────────────────────
+// ── Locate ────────────────────────────────────────────
 document.getElementById('btn-locate').addEventListener('click', () => {
-  if (!navigator.geolocation) {
-    alert('Geolocation wird von Ihrem Browser nicht unterstützt.');
-    return;
-  }
+  if (!navigator.geolocation) return alert('Geolocation nicht verfügbar.');
   navigator.geolocation.getCurrentPosition(pos => {
     userLat = pos.coords.latitude;
     userLng = pos.coords.longitude;
-
-    // Show user on map
-    L.circle([userLat, userLng], { radius: 50, color: '#1a6e3c', fillOpacity: .3 })
-      .addTo(map)
-      .bindPopup('Ihr Standort');
+    L.circleMarker([userLat, userLng], { radius: 8, color: '#1a6e3c', fillOpacity: .8 })
+      .addTo(map).bindPopup('Ihr Standort');
     map.setView([userLat, userLng], 15);
-
     applyFilters();
-  }, () => {
-    alert('Standort konnte nicht ermittelt werden. Bitte erlauben Sie den Zugriff.');
-  });
+  }, () => alert('Standort konnte nicht ermittelt werden.'));
 });
 
-// ── Clear filters ─────────────────────────────────────
 document.getElementById('btn-clear').addEventListener('click', () => {
   document.getElementById('search').value = '';
   document.getElementById('age-filter').value = '';
@@ -651,23 +564,34 @@ document.getElementById('btn-clear').addEventListener('click', () => {
   map.setView([47.3769, 8.5417], 13);
 });
 
-// ── Event listeners ───────────────────────────────────
 document.getElementById('search').addEventListener('input', applyFilters);
 document.getElementById('age-filter').addEventListener('change', applyFilters);
 
 // ── Load data ─────────────────────────────────────────
 async function loadData() {
+  const loadingEl = document.getElementById('loading');
   try {
-    const res = await fetch(WFS_URL);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const xml = await res.text();
-    allPlaygrounds = parseGML(xml);
-    buildEquipmentChips();
+    // Fetch both sources in parallel
+    loadingEl.querySelector('p').textContent = 'OSM + Stadt ZH Daten werden geladen…';
+
+    const [osmRes, wfsRes] = await Promise.all([
+      fetch(OVERPASS_URL, { method: 'POST', body: OVERPASS_QUERY }),
+      fetch(WFS_URL),
+    ]);
+
+    const [osmJson, wfsXml] = await Promise.all([
+      osmRes.json(),
+      wfsRes.text(),
+    ]);
+
+    const wfsByRef = parseWFS(wfsXml);
+    allPlaygrounds = mergeData(osmJson.elements || [], wfsByRef);
+
+    buildChips();
     applyFilters();
-    document.getElementById('loading').style.display = 'none';
+    loadingEl.style.display = 'none';
   } catch (err) {
-    document.getElementById('loading').innerHTML =
-      `<p style="color:#c00;">Fehler beim Laden der Daten.<br>${err.message}</p>`;
+    loadingEl.innerHTML = `<p style="color:#c00;padding:20px;text-align:center;">Fehler beim Laden:<br>${err.message}</p>`;
   }
 }
 
