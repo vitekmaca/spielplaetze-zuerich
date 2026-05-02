@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spielplätze & Grillplätze Zürich</title>
+  <title>Playgrounds & BBQ Spots – Zürich</title>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
@@ -37,35 +37,28 @@
     }
 
     /* ── Category toggles ── */
-    #categories {
-      padding: 10px 12px; border-bottom: 1px solid #eee;
-      flex-shrink: 0;
-    }
+    #categories { padding: 10px 12px; border-bottom: 1px solid #eee; flex-shrink: 0; }
     #categories-label {
       font-size: 10px; font-weight: 600; text-transform: uppercase;
       letter-spacing: .5px; color: #999; margin-bottom: 6px;
     }
-    #cat-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5px;
-    }
+    #cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+
     .cat-btn {
       display: flex; align-items: center; gap: 6px;
       padding: 7px 10px; border-radius: 8px;
       border: 2px solid #e0e0e0; background: #f9f9f9;
       font-size: 12px; font-weight: 500; color: #666;
-      cursor: pointer; transition: all .15s; text-align: left;
-      line-height: 1.2;
+      cursor: pointer; transition: all .15s; text-align: left; line-height: 1.2;
     }
-    .cat-btn .cb-icon { font-size: 16px; flex-shrink: 0; }
-    .cat-btn .cb-text { flex: 1; }
+    .cat-btn .cb-icon  { font-size: 16px; flex-shrink: 0; }
+    .cat-btn .cb-text  { flex: 1; }
     .cat-btn .cb-count { font-size: 10px; opacity: .65; }
 
-    .cat-btn.active[data-cat="sp_city"]  { background: #1a6e3c; border-color: #1a6e3c; color: #fff; }
-    .cat-btn.active[data-cat="sp_osm"]   { background: #388e3c; border-color: #388e3c; color: #fff; }
-    .cat-btn.active[data-cat="bbq"]      { background: #c62828; border-color: #c62828; color: #fff; }
-    .cat-btn.active[data-cat="picnic"]   { background: #e65100; border-color: #e65100; color: #fff; }
+    .cat-btn.active[data-cat="sp_city"] { background: #1a6e3c; border-color: #1a6e3c; color: #fff; }
+    .cat-btn.active[data-cat="sp_osm"]  { background: #388e3c; border-color: #388e3c; color: #fff; }
+    .cat-btn.active[data-cat="bbq"]     { background: #c62828; border-color: #c62828; color: #fff; }
+    .cat-btn.active[data-cat="picnic"]  { background: #e65100; border-color: #e65100; color: #fff; }
 
     /* ── Filters ── */
     #filters {
@@ -107,14 +100,12 @@
     }
     .item:hover { background: #f7faf8; }
     .item.highlighted { background: #e8f5ee; }
-    .item-dot {
-      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px;
-    }
+    .item-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
     .item-body { flex: 1; min-width: 0; }
     .item-name { font-weight: 600; font-size: 13px; color: #1a1a1a; }
     .item-sub  { font-size: 11px; color: #888; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .item-tags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
-    .tag { font-size: 10px; padding: 1px 6px; border-radius: 10px; background: #e8f5ee; color: #1a6e3c; }
+    .tag       { font-size: 10px; padding: 1px 6px; border-radius: 10px; background: #e8f5ee; color: #1a6e3c; }
     .tag.age   { background: #fff3e0; color: #e65100; }
     .tag.red   { background: #ffebee; color: #c62828; }
     .tag.amber { background: #fff8e1; color: #f57f17; }
@@ -161,57 +152,55 @@
 
 <div id="loading">
   <div class="spinner"></div>
-  <p id="loading-text">Daten werden geladen…</p>
+  <p id="loading-text">Loading data…</p>
   <small>OpenStreetMap · Stadt Zürich OGD</small>
 </div>
 
 <div id="sidebar">
   <div id="sidebar-header">
     <h1>🛝🔥🧺 Zürich Outdoor</h1>
-    <p>Spielplätze · Grillplätze · Picknickplätze</p>
-    <span id="count-badge">Wird geladen…</span>
+    <p>Playgrounds · BBQ Spots · Picnic Areas</p>
+    <span id="count-badge">Loading…</span>
   </div>
 
-  <!-- Category toggles -->
   <div id="categories">
-    <div id="categories-label">Kategorien — klicken zum Ein-/Ausblenden</div>
+    <div id="categories-label">Categories — click to show / hide</div>
     <div id="cat-grid">
       <button class="cat-btn active" data-cat="sp_city">
         <span class="cb-icon">🛝</span>
-        <span class="cb-text">Spielplätze<br><span class="cb-count" id="cnt-sp_city">Stadt ZH</span></span>
+        <span class="cb-text">Playgrounds<br><span class="cb-count" id="cnt-sp_city">City ZH</span></span>
       </button>
       <button class="cat-btn active" data-cat="sp_osm">
         <span class="cb-icon">🛝</span>
-        <span class="cb-text">Spielplätze<br><span class="cb-count" id="cnt-sp_osm">OSM</span></span>
+        <span class="cb-text">Playgrounds<br><span class="cb-count" id="cnt-sp_osm">OSM</span></span>
       </button>
       <button class="cat-btn active" data-cat="bbq">
         <span class="cb-icon">🔥</span>
-        <span class="cb-text">Grillplätze<br><span class="cb-count" id="cnt-bbq">OSM</span></span>
+        <span class="cb-text">BBQ Spots<br><span class="cb-count" id="cnt-bbq">OSM</span></span>
       </button>
       <button class="cat-btn active" data-cat="picnic">
         <span class="cb-icon">🧺</span>
-        <span class="cb-text">Picknickplätze<br><span class="cb-count" id="cnt-picnic">OSM</span></span>
+        <span class="cb-text">Picnic Areas<br><span class="cb-count" id="cnt-picnic">OSM</span></span>
       </button>
     </div>
   </div>
 
-  <!-- Filters -->
   <div id="filters">
     <div>
-      <span class="filter-label">Suche</span>
-      <input type="text" id="search" placeholder="Name, Adresse, Ausstattung…" />
+      <span class="filter-label">Search</span>
+      <input type="text" id="search" placeholder="Name, address, equipment…" />
     </div>
     <div>
-      <span class="filter-label">Altersgruppe (nur Stadt ZH Spielplätze)</span>
+      <span class="filter-label">Age group <span style="font-weight:400;text-transform:none;">(City ZH playgrounds only)</span></span>
       <select id="age-filter">
-        <option value="">Alle Altersgruppen</option>
-        <option value="0 - 5">0 – 5 Jahre</option>
-        <option value="0 - 9">0 – 9 Jahre</option>
-        <option value="0 - 16">0 – 16 Jahre</option>
+        <option value="">All ages</option>
+        <option value="0 - 5">0 – 5 years</option>
+        <option value="0 - 9">0 – 9 years</option>
+        <option value="0 - 16">0 – 16 years</option>
       </select>
     </div>
     <div>
-      <span class="filter-label">Geräte (nur Stadt ZH Spielplätze)</span>
+      <span class="filter-label">Equipment <span style="font-weight:400;text-transform:none;">(City ZH playgrounds only)</span></span>
       <div id="equipment-filter"></div>
     </div>
     <div id="filter-actions">
@@ -219,14 +208,14 @@
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
         </svg>
-        In meiner Nähe
+        Near me
       </button>
-      <button id="btn-clear">Alles zurücksetzen</button>
+      <button id="btn-clear">Reset all</button>
     </div>
   </div>
 
   <div id="list">
-    <div id="no-results">Keine Ergebnisse gefunden.</div>
+    <div id="no-results">No results found.</div>
   </div>
 </div>
 
@@ -244,25 +233,40 @@ const CITY_MAP_URL = id =>
   `https://www.maps.stadt-zuerich.ch/zueriplan3/Stadtplan.aspx?#basemap=Stadtplan&scale=2000&layer=Spielplatz&selectedObject=${id}&selectedLayer=Spielplatz`;
 const OSM_URL = (type, id) => `https://www.openstreetmap.org/${type}/${id}`;
 
-// cat = sp_city | sp_osm | bbq | picnic
 const CAT = {
-  sp_city: { color: '#1a6e3c', emoji: '🛝', label: 'Spielplatz (Stadt ZH)' },
-  sp_osm:  { color: '#388e3c', emoji: '🛝', label: 'Spielplatz (OSM)'      },
-  bbq:     { color: '#c62828', emoji: '🔥', label: 'Grillplatz'             },
-  picnic:  { color: '#e65100', emoji: '🧺', label: 'Picknickplatz'          },
+  sp_city: { color: '#1a6e3c', emoji: '🛝', label: 'Playground (City ZH)' },
+  sp_osm:  { color: '#388e3c', emoji: '🛝', label: 'Playground (OSM)'      },
+  bbq:     { color: '#c62828', emoji: '🔥', label: 'BBQ Spot'              },
+  picnic:  { color: '#e65100', emoji: '🧺', label: 'Picnic Area'           },
 };
 
+// Equipment chips: { label (English), match (German substring, lowercase) }
+// Derived from actual Stadt ZH WFS data — counts in comments
 const EQUIPMENT_CHIPS = [
-  'Schaukel','Rutsche','Sandkasten','Kletteranlage','Federwippe',
-  'Korbschaukel','Tischtennistisch','Trampolin','Wasseranlage',
-  'Balanciergerät','Seilbahn','Wippe','Fussballplatz','Basketballkorb','Boulebahn',
+  { label: 'Swing',           match: 'schaukel'       }, // Brettschaukel 111, Korbschaukel 27, etc.
+  { label: 'Nest Swing',      match: 'korbschaukel'   }, // 27
+  { label: 'Slide',           match: 'rutsche'        }, // Hangrutsche 27, Bockrutsche 21, Rutsche 11, etc.
+  { label: 'Sand',            match: 'sand'           }, // Sandbereich 79, Sandkasten 22, etc.
+  { label: 'Climbing Frame',  match: 'kletter'        }, // Kletteranlage 57+7, Kletterelement 25, etc.
+  { label: 'Spring Rocker',   match: 'wippe'          }, // Federwippe 70, Balkenwippe 13, Schwingwippe 7
+  { label: 'Table Tennis',    match: 'tischtennistisch'}, // 31
+  { label: 'Balance',         match: 'balancier'      }, // Balanciergerät 44
+  { label: 'Water Play',      match: 'wasser'         }, // Wasserspiel 15, Wasserförderanlage 14
+  { label: 'Water Pump',      match: 'pumpe'          }, // Pumpe 21, Pumpen 11
+  { label: 'Playhouse',       match: 'spielhaus'      }, // 17
+  { label: 'Hammock',         match: 'hängematte'     }, // 16
+  { label: 'Roundabout',      match: 'karussell'      }, // Sitzkarussell 10, Karussell 2
+  { label: 'Zip Line',        match: 'seilbahn'       }, // 7
+  { label: 'Mud Table',       match: 'matschtisch'    }, // 6
+  { label: 'Paddling Pool',   match: 'planschbecken'  }, // 2
+  { label: 'Trampoline',      match: 'trampolin'      }, // 1
 ];
 
 // ── State ──────────────────────────────────────────────
-let allItems      = [];
-let markers       = {};
-let activeCats    = new Set(Object.keys(CAT));
-let activeEquip   = new Set();
+let allItems    = [];
+let markers     = {};
+let activeCats  = new Set(Object.keys(CAT));
+let activeEquip = new Set();  // stores match strings
 let userLat = null, userLng = null;
 let lastKey = null;
 let clusterGroups = {};
@@ -294,27 +298,31 @@ const iconHL = makeIcon('#37474f', '📍', 32);
 // ── Parse WFS GML ──────────────────────────────────────
 function parseWFS(xml) {
   const doc = new DOMParser().parseFromString(xml, 'text/xml');
-  const map = {};
+  const byRef = {};
   doc.querySelectorAll('featureMember').forEach(m => {
     const g = tag => { const el = m.querySelector(tag); return el && !el.getAttribute('xsi:nil') ? el.textContent.trim() : ''; };
     const posEl = m.querySelector('pos');
     if (!posEl) return;
     const [lng, lat] = posEl.textContent.trim().split(' ').map(Number);
     const ref = g('nummer');
-    if (ref) map[ref] = { poiId: g('poi_id'), lat, lng, name: g('name'), address: g('adresse'), age: g('eignung'), equipment: g('geraete'), elements: g('elemente'), special: g('besonderes') };
+    if (ref) byRef[ref] = {
+      poiId: g('poi_id'), lat, lng,
+      name: g('name'), address: g('adresse'),
+      age: g('eignung'), equipment: g('geraete'),
+      elements: g('elemente'), special: g('besonderes'),
+    };
   });
-  return map;
+  return byRef;
 }
 
-// ── Determine cat from OSM tags ────────────────────────
-function catFromTags(tags, hasCityData) {
-  if (tags.amenity  === 'bbq')          return 'bbq';
-  if (tags.tourism  === 'picnic_site')  return 'picnic';
-  if (tags.leisure  === 'playground')   return hasCityData ? 'sp_city' : 'sp_osm';
-  return 'sp_osm';
+// ── Determine category ─────────────────────────────────
+function getCat(tags, hasCityData) {
+  if (tags.amenity === 'bbq')         return 'bbq';
+  if (tags.tourism === 'picnic_site') return 'picnic';
+  return hasCityData ? 'sp_city' : 'sp_osm';
 }
 
-// ── Build merged items ─────────────────────────────────
+// ── Build items ────────────────────────────────────────
 function buildItems(osmEls, wfsByRef) {
   return osmEls.map(el => {
     const tags = el.tags || {};
@@ -322,27 +330,27 @@ function buildItems(osmEls, wfsByRef) {
     const lng  = el.type === 'node' ? el.lon : el.center?.lon;
     if (!lat || !lng) return null;
 
-    const osmRef   = tags.ref ? tags.ref.replace(/\D/g,'') : null;
-    const city     = (tags.leisure === 'playground' && osmRef) ? wfsByRef[osmRef] : null;
-    const cat      = catFromTags(tags, !!city);
+    const osmRef = tags.ref ? tags.ref.replace(/\D/g,'') : null;
+    const city   = (tags.leisure === 'playground' && osmRef) ? wfsByRef[osmRef] : null;
+    const cat    = getCat(tags, !!city);
 
     return {
       key: `${el.type}-${el.id}`,
       osmId: el.id, osmType: el.type,
       cat, lat, lng,
-      name:        city?.name        || tags.name      || tags.alt_name || '',
-      address:     city?.address     || tags['addr:street'] || '',
-      operator:    tags.operator     || '',
-      surface:     tags.surface      || '',
-      wheelchair:  tags.wheelchair   || '',
-      covered:     tags.covered      || '',
-      fireplace:   tags.fireplace    || '',
-      openingHours:tags.opening_hours|| '',
-      poiId:       city?.poiId       || null,
-      age:         city?.age         || '',
-      equipment:   city?.equipment   || '',
-      elements:    city?.elements    || '',
-      special:     city?.special     || '',
+      name:         city?.name        || tags.name      || tags.alt_name || '',
+      address:      city?.address     || tags['addr:street'] || '',
+      operator:     tags.operator     || '',
+      surface:      tags.surface      || '',
+      wheelchair:   tags.wheelchair   || '',
+      covered:      tags.covered      || '',
+      fireplace:    tags.fireplace    || '',
+      openingHours: tags.opening_hours|| '',
+      poiId:        city?.poiId       || null,
+      age:          city?.age         || '',
+      equipment:    city?.equipment   || '',
+      elements:     city?.elements    || '',
+      special:      city?.special     || '',
     };
   }).filter(Boolean);
 }
@@ -351,24 +359,24 @@ function buildItems(osmEls, wfsByRef) {
 function buildPopup(p) {
   const c = CAT[p.cat];
   const rows = [];
-  if (p.age)       rows.push(`<div class="popup-row"><strong>Alter:</strong> ${p.age}</div>`);
+  if (p.age) rows.push(`<div class="popup-row"><strong>Age:</strong> ${p.age.replace('Jahre','years')}</div>`);
   if (p.equipment) {
     const chips = p.equipment.split(',').map(e =>
       `<span style="display:inline-block;background:#e8f5ee;color:#1a6e3c;border-radius:10px;padding:1px 7px;font-size:11px;margin:2px 1px;">${e.trim()}</span>`
     ).join('');
-    rows.push(`<div class="popup-row"><strong>Geräte:</strong><br>${chips}</div>`);
+    rows.push(`<div class="popup-row"><strong>Equipment:</strong><br>${chips}</div>`);
   }
-  if (p.elements)           rows.push(`<div class="popup-row"><strong>Elemente:</strong> ${p.elements}</div>`);
-  if (p.surface)            rows.push(`<div class="popup-row"><strong>Belag:</strong> ${p.surface}</div>`);
-  if (p.covered==='yes')    rows.push(`<div class="popup-row">🏠 Überdacht</div>`);
-  if (p.fireplace==='yes')  rows.push(`<div class="popup-row">🔥 Feuerstelle vorhanden</div>`);
-  if (p.wheelchair==='yes') rows.push(`<div class="popup-row">♿ Rollstuhlgerecht</div>`);
-  if (p.operator)           rows.push(`<div class="popup-row"><strong>Betreiber:</strong> ${p.operator}</div>`);
-  if (p.openingHours)       rows.push(`<div class="popup-row"><strong>Öffnungszeiten:</strong> ${p.openingHours}</div>`);
+  if (p.elements)           rows.push(`<div class="popup-row"><strong>Features:</strong> ${p.elements}</div>`);
+  if (p.surface)            rows.push(`<div class="popup-row"><strong>Surface:</strong> ${p.surface}</div>`);
+  if (p.covered==='yes')    rows.push(`<div class="popup-row">🏠 Covered</div>`);
+  if (p.fireplace==='yes')  rows.push(`<div class="popup-row">🔥 Fireplace available</div>`);
+  if (p.wheelchair==='yes') rows.push(`<div class="popup-row">♿ Wheelchair accessible</div>`);
+  if (p.operator)           rows.push(`<div class="popup-row"><strong>Operator:</strong> ${p.operator}</div>`);
+  if (p.openingHours)       rows.push(`<div class="popup-row"><strong>Hours:</strong> ${p.openingHours}</div>`);
   if (p.special)            rows.push(`<div class="popup-row" style="color:#777;font-style:italic">${p.special}</div>`);
 
   const links = [];
-  if (p.poiId) links.push(`<a class="popup-link city" href="${CITY_MAP_URL(p.poiId)}" target="_blank" rel="noopener">Stadt ZH Karte →</a>`);
+  if (p.poiId) links.push(`<a class="popup-link city" href="${CITY_MAP_URL(p.poiId)}" target="_blank" rel="noopener">City ZH Map →</a>`);
   links.push(`<a class="popup-link osm" href="${OSM_URL(p.osmType,p.osmId)}" target="_blank" rel="noopener">OpenStreetMap →</a>`);
 
   return `<div style="min-width:220px;max-width:290px;">
@@ -402,7 +410,7 @@ function getFiltered() {
     if (activeEquip.size > 0) {
       if (!p.equipment) return false;
       const eq = p.equipment.toLowerCase();
-      for (const e of activeEquip) if (!eq.includes(e.toLowerCase())) return false;
+      for (const m of activeEquip) if (!eq.includes(m)) return false;
     }
     return true;
   });
@@ -415,31 +423,31 @@ function renderList(filtered) {
 
   const sorted = [...filtered].sort((a,b) => {
     if (userLat !== null) return haversine(userLat,userLng,a.lat,a.lng) - haversine(userLat,userLng,b.lat,b.lng);
-    const catOrder = {sp_city:0, sp_osm:1, bbq:2, picnic:3};
-    if (a.cat !== b.cat) return catOrder[a.cat] - catOrder[b.cat];
-    return (a.name||'zzz').localeCompare(b.name||'zzz','de');
+    const order = {sp_city:0, sp_osm:1, bbq:2, picnic:3};
+    if (a.cat !== b.cat) return order[a.cat] - order[b.cat];
+    return (a.name||'zzz').localeCompare(b.name||'zzz','en');
   });
 
   const list = document.getElementById('list');
   sorted.forEach(p => {
     const c    = CAT[p.cat];
     const item = document.createElement('div');
-    item.className  = 'item';
+    item.className   = 'item';
     item.dataset.key = p.key;
 
     const tags = [];
-    if (p.age)              tags.push(`<span class="tag age">${p.age}</span>`);
-    if (p.cat === 'bbq')    tags.push(`<span class="tag red">🔥 Grillplatz</span>`);
-    if (p.cat === 'picnic') tags.push(`<span class="tag amber">🧺 Picknick</span>`);
-    if (p.covered==='yes')  tags.push(`<span class="tag">🏠 überdacht</span>`);
-    if (p.fireplace==='yes')tags.push(`<span class="tag red">🔥 Feuerstelle</span>`);
+    if (p.age) tags.push(`<span class="tag age">${p.age.replace('Jahre','yrs')}</span>`);
+    if (p.cat === 'bbq')    tags.push(`<span class="tag red">🔥 BBQ</span>`);
+    if (p.cat === 'picnic') tags.push(`<span class="tag amber">🧺 Picnic</span>`);
+    if (p.covered==='yes')  tags.push(`<span class="tag">🏠 covered</span>`);
+    if (p.fireplace==='yes')tags.push(`<span class="tag red">🔥 fireplace</span>`);
+    if (p.wheelchair==='yes')tags.push(`<span class="tag">♿</span>`);
     if (p.equipment) {
       p.equipment.split(',').slice(0,3).forEach(e => tags.push(`<span class="tag">${e.trim()}</span>`));
       if (p.equipment.split(',').length > 3) tags.push(`<span class="tag">+${p.equipment.split(',').length-3}</span>`);
     }
-    if (p.wheelchair==='yes') tags.push(`<span class="tag">♿</span>`);
 
-    const sub  = p.address || p.operator || (p.cat === 'sp_city' ? 'Stadt Zürich' : p.cat === 'sp_osm' ? 'OSM' : '');
+    const sub  = p.address || p.operator || (p.cat==='sp_city' ? 'City of Zurich' : p.cat==='sp_osm' ? 'OpenStreetMap' : '');
     const dist = userLat !== null ? `<div class="item-dist">📍 ${fmtDist(haversine(userLat,userLng,p.lat,p.lng))}</div>` : '';
 
     item.innerHTML = `
@@ -487,20 +495,14 @@ function highlight(key) {
 // ── Apply filters ──────────────────────────────────────
 function applyFilters() {
   const filtered = getFiltered();
-
-  // Count per cat (total / filtered)
   const total={}, show={};
   Object.keys(CAT).forEach(c=>{total[c]=0;show[c]=0;});
-  allItems.forEach(p => total[p.cat]++);
-  filtered.forEach(p => show[p.cat]++);
-
+  allItems.forEach(p=>total[p.cat]++);
+  filtered.forEach(p=>show[p.cat]++);
   Object.keys(CAT).forEach(cat => {
-    document.getElementById(`cnt-${cat}`).textContent =
-      `${show[cat]} / ${total[cat]}`;
+    document.getElementById(`cnt-${cat}`).textContent = `${show[cat]} / ${total[cat]}`;
   });
-  document.getElementById('count-badge').textContent =
-    `${filtered.length} von ${allItems.length} Ergebnissen`;
-
+  document.getElementById('count-badge').textContent = `${filtered.length} of ${allItems.length} results`;
   renderList(filtered);
   updateMap(filtered);
 }
@@ -509,13 +511,8 @@ function applyFilters() {
 document.querySelectorAll('.cat-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const cat = btn.dataset.cat;
-    if (activeCats.has(cat)) {
-      activeCats.delete(cat);
-      map.removeLayer(clusterGroups[cat]);
-    } else {
-      activeCats.add(cat);
-      map.addLayer(clusterGroups[cat]);
-    }
+    if (activeCats.has(cat)) { activeCats.delete(cat); map.removeLayer(clusterGroups[cat]); }
+    else                     { activeCats.add(cat);    map.addLayer(clusterGroups[cat]);    }
     btn.classList.toggle('active', activeCats.has(cat));
     applyFilters();
   });
@@ -523,31 +520,34 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
 
 // ── Equipment chips ────────────────────────────────────
 function buildChips() {
-  const c = document.getElementById('equipment-filter');
-  EQUIPMENT_CHIPS.forEach(eq => {
+  const container = document.getElementById('equipment-filter');
+  EQUIPMENT_CHIPS.forEach(({ label, match }) => {
     const chip = document.createElement('span');
-    chip.className = 'equip-chip'; chip.textContent = eq;
+    chip.className   = 'equip-chip';
+    chip.textContent = label;
+    chip.dataset.match = match;
     chip.addEventListener('click', () => {
-      activeEquip.has(eq) ? activeEquip.delete(eq) : activeEquip.add(eq);
-      chip.classList.toggle('active'); applyFilters();
+      activeEquip.has(match) ? activeEquip.delete(match) : activeEquip.add(match);
+      chip.classList.toggle('active');
+      applyFilters();
     });
-    c.appendChild(chip);
+    container.appendChild(chip);
   });
 }
 
 // ── Locate ─────────────────────────────────────────────
 document.getElementById('btn-locate').addEventListener('click', () => {
-  if (!navigator.geolocation) return alert('Geolocation nicht verfügbar.');
+  if (!navigator.geolocation) return alert('Geolocation is not available in your browser.');
   navigator.geolocation.getCurrentPosition(pos => {
     userLat = pos.coords.latitude; userLng = pos.coords.longitude;
     L.circleMarker([userLat,userLng],{radius:8,color:'#1a6e3c',fillOpacity:.8})
-      .addTo(map).bindPopup('Ihr Standort');
+      .addTo(map).bindPopup('Your location');
     map.setView([userLat,userLng],15);
     applyFilters();
-  }, ()=>alert('Standort konnte nicht ermittelt werden.'));
+  }, ()=>alert('Could not determine your location. Please allow location access.'));
 });
 
-// ── Clear ──────────────────────────────────────────────
+// ── Reset ──────────────────────────────────────────────
 document.getElementById('btn-clear').addEventListener('click', () => {
   document.getElementById('search').value = '';
   document.getElementById('age-filter').value = '';
@@ -566,12 +566,11 @@ document.getElementById('btn-clear').addEventListener('click', () => {
 document.getElementById('search').addEventListener('input', applyFilters);
 document.getElementById('age-filter').addEventListener('change', applyFilters);
 
-// ── Load ───────────────────────────────────────────────
+// ── Load data ──────────────────────────────────────────
 async function loadData() {
   const txt = document.getElementById('loading-text');
   try {
-    txt.textContent = 'OSM-Daten werden geladen…';
-
+    txt.textContent = 'Loading OSM data…';
     const query = `[out:json][timeout:60];
 area["name"="Zürich"]["admin_level"="8"]->.a;
 (
@@ -587,19 +586,16 @@ out center tags;`;
       fetch(OVERPASS, { method:'POST', body:query }),
       fetch(WFS_URL),
     ]);
-
-    txt.textContent = 'Daten werden verarbeitet…';
+    txt.textContent = 'Processing…';
     const [osmJson, wfsXml] = await Promise.all([osmRes.json(), wfsRes.text()]);
 
-    const wfsByRef = parseWFS(wfsXml);
-    allItems = buildItems(osmJson.elements||[], wfsByRef);
-
+    allItems = buildItems(osmJson.elements||[], parseWFS(wfsXml));
     buildChips();
     applyFilters();
     document.getElementById('loading').style.display = 'none';
   } catch(err) {
     document.getElementById('loading').innerHTML =
-      `<p style="color:#c00;padding:20px;text-align:center;">Fehler:<br>${err.message}</p>`;
+      `<p style="color:#c00;padding:20px;text-align:center;">Error loading data:<br>${err.message}</p>`;
   }
 }
 
